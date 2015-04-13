@@ -19,7 +19,10 @@ public class Network {
  
 //buffer for determining if an output value is correct
 private static final double ERROR_BUFFER = 0.05;
-private static final int OUTPUT_MULTIPLIER = 10;
+private static final double OUTPUT_MULTIPLIER = 10;
+
+//number of epochs for each training run
+private static final int NUM_EPOCHS = 50;
 
 //variable for tracking network performance
 private static int NUM_CORRECT = 0;
@@ -27,15 +30,21 @@ private static int NUM_POSSIBLE = 0;
 private static double PERCENT_CORRECT;
 
 //VARIABLES TO BE SET AT COMMAND LINE. REPLACE WHEN INTEGRATING WITH READIN CODE
-private static final int NUM_EPOCHS = 50;
 private static int NUM_INPUT_NODES = 10;
-private static int NUM_OUTPUT_NODES = 1;
+private static int NUM_OUTPUT_NODES = 10;
 private static double ALPHA = 0.1;
-
- 
-//vectors of inputNodes and outputNodes
 private static Vector<inputNode> inputs = new Vector<inputNode>();;
 private static Vector<outputNode> outputs = new Vector<outputNode>();
+
+ 
+//vectors of inputNodes and outputNodes, constants storing their sizes
+// private static Vector<inputNode> inputs;
+// private static Vector<outputNode> outputs;
+// private static int NUM_INPUT_NODES;
+// private static int NUM_OUTPUT_NODES;
+
+//learning rate will be specified by command line input
+// private static double ALPHA;
  
  
 //2D array of paths
@@ -45,6 +54,19 @@ private static Path[][] paths;
 private static Random rand = new Random();
 
 public static void main(String[] args){
+
+//ACTUAL METHOD TO CALL ONCE WE HAVE INTEGRATED WITH READ IN CODE
+//public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode> trainingOutput, Path[][]trainingPaths, double alpha){
+
+    //set variables to given parameters
+    // inputs = trainingInput;
+    // outputs = trainingOutput;
+    // paths = trainingPaths;
+    // ALPHA = alpha;
+    // NUM_INPUT_NODES = inputs.size();
+    // NUM_OUTPUT_NODES = outputs.size();
+
+
 
     
 
@@ -89,7 +111,7 @@ public static void main(String[] args){
     }
 
     //create paths array. THIS SHOULD BE DONE IN READ IN BEFORE PASSED
-    generatePaths();        
+    generatePaths(inputs, outputs);        
 
     //test print of paths
     for (int i = 0; i < NUM_INPUT_NODES; i++){
@@ -177,6 +199,8 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
     outputs = testOutput;
     paths = testPaths;
     ALPHA = alpha;
+    NUM_INPUT_NODES = inputs.size();
+    NUM_OUTPUT_NODES = outputs.size();
 
     //update start and end nodes for each path
     for (int i = 0; i < NUM_INPUT_NODES; i++){
@@ -226,7 +250,17 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
     //case with only one output node
     if (outputs.size() == 1){
  
-        result = (int) (outputs.get(0).getValue() * OUTPUT_MULTIPLIER);
+        result = (int)(outputs.get(0).getValue() * OUTPUT_MULTIPLIER + 0.5);
+        // if (result > ((double) NUM_OUTPUT_NODES - 0.5)){
+        //     result = NUM_OUTPUT_NODES;
+        // }
+        // else if ((result - (int)result) > 0.5){
+        //     result = (int)(result + 1);
+        // }
+        // else{
+        //     result = (int) result;
+        // }
+        
         integerTarget = (int) (outputs.get(0).getTarget() * OUTPUT_MULTIPLIER);
 
         //check if output is within percent error bounds (i.e. if it is considered correct)
@@ -355,6 +389,7 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
 
         for (int i = 0; i < NUM_OUTPUT_NODES; i++){
 
+            //int randomInt = rand.nextInt(9);
             double randomDouble = rand.nextDouble();
             double value;
 
@@ -376,17 +411,19 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
     }
 
     //function creates paths between every inputNode and every outputNode
-    public static void generatePaths(){
+    public static void generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
 
+            int numInputs = inputNodes.size();
+            int numOutputs = outputNodes.size();
             //initialize paths array
-            paths = new Path[NUM_INPUT_NODES][NUM_OUTPUT_NODES];
+            paths = new Path[numInputs][numOutputs];
 
             int uniqueIdentifer = 0;
             //create paths
-            for (int i = 0; i < NUM_INPUT_NODES; i++){
-                for (int j = 0; j < NUM_OUTPUT_NODES; j++){
+            for (int i = 0; i < numInputs; i++){
+                for (int j = 0; j < numOutputs; j++){
 
-                    Path newPath = new Path(inputs.get(i), outputs.get(j), uniqueIdentifer);
+                    Path newPath = new Path(inputNodes.get(i), outputNodes.get(j), uniqueIdentifer);
                     paths[i][j] = newPath;
                     uniqueIdentifer++;
                 }

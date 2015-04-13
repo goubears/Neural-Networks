@@ -23,11 +23,12 @@ public class outputNode {
     private double target;
     public final double e = 2.71828;
     private int identifier;
+    private final double OUTPUT_MULTIPLIER = 10;
  
     //constructor takes target value of output node & identifier. Value depends on output representation specified on command line
     public outputNode(double tar, int index){
  
-        target = tar;
+        target = tar;       
         identifier = index;
     }
  
