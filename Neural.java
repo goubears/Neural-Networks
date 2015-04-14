@@ -46,15 +46,15 @@ public class Neural{
 
 		//System.out.printf("%d ", inputVector.get(0).size());
 
-		for(int i=0; i<inputVector.get(0).size(); i++){
-		 	System.out.printf("%d ", inputVector.get(0).get(i).getValue());
-		}
-		System.out.println();
+		// for(int i=0; i<inputVector.get(0).size(); i++){
+		//  	System.out.printf("%d ", inputVector.get(0).get(i).getValue());
+		// }
+		// System.out.println();
 		
-		for(int i=0; i<outputVector.get(0).size(); i++){
-			System.out.printf("%f ", outputVector.get(1).get(i).getTarget());
-		}
-		System.out.println();
+		// for(int i=0; i<outputVector.get(0).size(); i++){
+		// 	System.out.printf("%f ", outputVector.get(1).get(i).getTarget());
+		// }
+		// System.out.println();
 	}
 
 	//reads file and stores the cities coordinates and identifier
