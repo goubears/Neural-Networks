@@ -21,10 +21,12 @@ public class Neural{
 	private static BufferedReader reader = null;
 	private static File file;
 	private static String fileName;
+	private static Network network = new Network();
 
-	//vectors of input and output nodes
+	//vectors of input and output nodes, 2D paths array
 	private static Vector<Vector<inputNode>> inputVector = new Vector<Vector<inputNode>>();
 	private static Vector<Vector<outputNode>> outputVector = new Vector<Vector<outputNode>>();
+	private static Path[][] paths;
 
 		//command line arguments
 	private static int fileSize; // 8 or 32
@@ -43,18 +45,32 @@ public class Neural{
 		fileSize = Integer.parseInt(args[1]);
 		method = args[2];
 		readFile(file);
+		generatePaths(inputVector.get(0), outputVector.get(0));
 
-		//System.out.printf("%d ", inputVector.get(0).size());
+		System.out.printf("%d ", inputVector.get(0).size());
 
-		// for(int i=0; i<inputVector.get(0).size(); i++){
-		//  	System.out.printf("%d ", inputVector.get(0).get(i).getValue());
-		// }
-		// System.out.println();
+		for(int i=0; i<inputVector.get(0).size(); i++){
+		 	System.out.printf("%d ", inputVector.get(0).get(i).getValue());
+		}
+		System.out.println();
 		
-		// for(int i=0; i<outputVector.get(0).size(); i++){
-		// 	System.out.printf("%f ", outputVector.get(1).get(i).getTarget());
-		// }
-		// System.out.println();
+		for(int i=0; i<outputVector.get(0).size(); i++){
+			System.out.printf("%f ", outputVector.get(1).get(i).getTarget());
+		}
+		System.out.println();
+
+		Path[][] tempPaths;
+		for (int i = 0; i < inputVector.size() - 1; i++){
+
+			System.out.println(outputVector.get(i).get(0).getTarget());
+			tempPaths = network.train(inputVector.get(i), outputVector.get(i), paths, 0.1);
+			paths = tempPaths;
+
+		}
+		//paths = network.train(inputVector.get(0), outputVector.get(0), paths, 0.1);
+		System.out.println("Trained on first example.");
+
+
 	}
 
 	//reads file and stores the cities coordinates and identifier
@@ -180,6 +196,35 @@ public class Neural{
 			e.printStackTrace();	
 		}
 	}
+
+	//function creates paths between every inputNode and every outputNode. Called in Neural class after files have been read in.
+    //Takes vectors of inputNodes and outputNodes as parameters, returns void
+    public static void generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
+
+            int numInputs = inputNodes.size();
+            int numOutputs = outputNodes.size();
+            //initialize paths array
+            paths = new Path[numInputs][numOutputs];
+
+            int uniqueIdentifer = 0;
+            //create paths
+            for (int i = 0; i < numInputs; i++){
+                for (int j = 0; j < numOutputs; j++){
+
+                    Path newPath = new Path(inputNodes.get(i), outputNodes.get(j), uniqueIdentifer);
+                    paths[i][j] = newPath;
+                    uniqueIdentifer++;
+                }
+
+            }
+
+      //       for (int i = 0; i < numInputs; i++){
+      //   		for (int j = 0; j < numOutputs; j++){
+
+      //       		System.out.println("Path " + paths[i][j].getIdentifier() + " start: " + paths[i][j].getStart().getIdentifier() + " End: " + paths[i][j].getEnd().getIdentifier() + " Weight: " + paths[i][j].getValue());
+      //   		}
+    		// }
+    }
 
 
 }
