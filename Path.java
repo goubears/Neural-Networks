@@ -8,7 +8,9 @@
 
         /*
 
-        Description: THE CAKE IS A LIE.
+        Description: A path represents the axon of a neuron (inputNode) connecting to another neuron (an outputNode). Each path has a weight, which is used 
+        in determining the strength of its signals to the outputNodes. Weight is initialized to a random value between -0.15 and 0.15. Class includes basic
+        getter and setter functions, as well as the equations used for updating the weights.
 
         */
 

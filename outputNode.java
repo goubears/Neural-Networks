@@ -8,7 +8,9 @@
 
         /*
 
-        Description: THE CAKE IS A LIE.
+        Description: The outputNode class represents the neurons which are receiving information from the axons of our inputNodes. Each outputNode contains a target value from
+        the input file and a unique identifier. Class includes basic getting and setter functions as well as the equation for calculating the outputNode's value (a function of
+        the signals from the inputNodes).
 
         */
 
@@ -54,6 +56,7 @@ public class outputNode {
         return identifier;
     }
 
+    //THE CAKE IS A LIE.
     public boolean equals(outputNode x){
 
         if (x.getIdentifier() == identifier){

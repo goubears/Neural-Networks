@@ -197,6 +197,13 @@ public class Neural{
 		}
 	}
 
+		/****************************************
+         *                                      *
+         *        generatePaths function        *
+         *         Andrew Miller-Smith          *
+         *                                      *
+         ****************************************/
+
 	//function creates paths between every inputNode and every outputNode. Called in Neural class after files have been read in.
     //Takes vectors of inputNodes and outputNodes as parameters, returns void
     public static void generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
