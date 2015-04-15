@@ -17,6 +17,8 @@ import java.util.*;
 
 public class untitled{
 
+	private static Network network = new Network();
+
 	//file Variables
 	private static BufferedReader reader = null;
 	private static File fileTraining;
@@ -24,9 +26,10 @@ public class untitled{
 	private static String fileNameTraining;
 	private static String fileNameTesting;
 
-	//(training) vectors of input and output nodes 
+	//(training) vectors of input and output nodes, 2D paths array
 	private static Vector<Vector<inputNode>> trainingInputVector = new Vector<Vector<inputNode>>();
 	private static Vector<Vector<outputNode>> trainingOutputVector = new Vector<Vector<outputNode>>();
+	private static Path[][] paths;
 
 	//(testing) vectors of input and output nodes 
 	private static Vector<Vector<inputNode>> testingInputVector = new Vector<Vector<inputNode>>();
@@ -50,6 +53,7 @@ public class untitled{
 		
 		fileTraining = new File(fileNameTraining);
 		fileTesting = new File(fileNameTesting);
+		
 
 		fileSize = Integer.parseInt(args[2]);
 		method = args[3];
@@ -58,17 +62,40 @@ public class untitled{
 		readFileTraining(fileTraining);
 		readFileTesting(fileTesting);
 
-	System.out.printf("%d ", testingInputVector.get(0).size());
+		paths = network.generatePaths(trainingInputVector.get(0), trainingOutputVector.get(0));
 
-	for(int i=0; i<testingInputVector.get(0).size(); i++){
-	 	System.out.printf("%d ", testingInputVector.get(0).get(i).getValue());
-	}
-	System.out.println();
+		Path[][] tempPaths;
+		//System.out.println("Training input vector size: " + trainingInputVector.get(0).getSize();
+		for (int i = 0; i < trainingInputVector.size() - 1; i++){
+
+			// System.out.println(trainingOutputVector.get(i).get(0).getTarget());
+			// System.out.println("Finished problem.");
+			tempPaths = network.train(trainingInputVector.get(i), trainingOutputVector.get(i), paths, learningRate);
+			paths = tempPaths;
+
+		}
+
+		//test on test
+		for (int i = 0; i < testingInputVector.size() - 1; i++){
+
+			// System.out.println(trainingOutputVector.get(i).get(0).getTarget());
+			// System.out.println("Finished problem.");
+			boolean testValue = network.test(testingInputVector.get(i), testingOutputVector.get(i), paths, learningRate);
+			
+
+		}
+
+	// System.out.printf("%d ", testingInputVector.get(0).size());
+
+	// for(int i=0; i<testingInputVector.get(0).size(); i++){
+	//  	System.out.printf("%d ", testingInputVector.get(0).get(i).getValue());
+	// }
+	// System.out.println();
 		
-	for(int i=0; i<testingOutputVector.get(0).size(); i++){
-		System.out.printf("%f ", testingOutputVector.get(3).get(i).getTarget());
-	}
-	System.out.println();
+	// for(int i=0; i<testingOutputVector.get(0).size(); i++){
+	// 	System.out.printf("%f ", testingOutputVector.get(3).get(i).getTarget());
+	// }
+	// System.out.println();
 		
 
 	}

@@ -21,7 +21,7 @@ import java.util.Random;
 public class Network {
  
 //buffer for determining if an output value is correct
-private static final double ERROR_BUFFER = 0.05;
+private static final double ERROR_BUFFER = 0.1;
 private static final double OUTPUT_MULTIPLIER = 10;
 
 //number of epochs for each training run
@@ -62,6 +62,8 @@ private static Random rand = new Random();
 //InputNodes send weighted values to the outputNodes, which use this to calculate their values. Path weights are then adjusted based 
 //on how close those values are to the outputNodes' specified targets. Returns the updated paths array
 public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode> trainingOutput, Path[][]trainingPaths, double alpha){
+
+    //System.out.println("Training!");
 
     //set variables to given parameters
     inputs = trainingInput;
@@ -205,15 +207,100 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
      //calculate values of output nodes based on weighted inputs
         for (int i = 0; i < NUM_OUTPUT_NODES; i++){
 
-            System.out.println("Output node " + outputs.get(i).getIdentifier() + " value : " + outputs.get(i).getValue());
+            //System.out.println("Output node " + outputs.get(i).getIdentifier() + " value : " + outputs.get(i).getValue());
 
             if (i == NUM_OUTPUT_NODES - 1){
-                System.out.println();
+                //System.out.println();
             }
         }
+        
+      //check correctness of tests
+        int numCorrect = 0;
+        int numPossible = NUM_OUTPUT_NODES;
+        double percentCorrect;
+        double result;
+        double integerTarget;
+        double percentError;
+     
+        //case with only one output node
+        if (outputs.size() == 1){
+        	
+        	System.out.println("TEST RESULT");
+     
+            result = (int)(outputs.get(0).getValue() * OUTPUT_MULTIPLIER + 0.5);
+            //Because I could not stop for Death,
+            //He kindly stopped for me;
+            //The cube had food and maybe ammo.
+            //And immortality. 
+            // if (result > ((double) NUM_OUTPUT_NODES - 0.5)){
+            //     result = NUM_OUTPUT_NODES;
+            // }
+            // else if ((result - (int)result) > 0.5){
+            //     result = (int)(result + 1);
+            // }
+            // else{
+            //     result = (int) result;
+            // }
+            
+            integerTarget = (int) (outputs.get(0).getTarget() * OUTPUT_MULTIPLIER);
 
-    //test(inputs, outputs, paths, ALPHA);
-    return paths;
+            //check if output is within percent error bounds (i.e. if it is considered correct)
+            percentError = Math.abs((integerTarget - result) / integerTarget);
+            if (percentError < ERROR_BUFFER){
+
+                numCorrect++;
+                System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                
+            }
+            else{
+                System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                
+            }
+     
+        }
+
+        //output is represented in bit string
+        else{
+
+        	System.out.println("TEST RESULT");
+            //System.out.println("Number output nodes: " + NUM_OUTPUT_NODES);
+
+            //loop through outputs. The node with the highest value is the network's output
+            int bestNode = 0;
+            double bestValue = Double.NEGATIVE_INFINITY;
+            int actualTarget = 0;
+            for (int i = 0; i < NUM_OUTPUT_NODES; i++){
+
+                if (outputs.get(i).getValue() > bestValue){
+
+                    bestNode = i;
+                    bestValue = outputs.get(i).getValue();
+                }
+
+                //find which node is the actual target value
+                if (outputs.get(i).getTarget() == 1){
+
+                    actualTarget = i;
+                }
+            }
+
+            //check if output is within percent error bounds (i.e. if it is considered correct)
+            result = bestNode;
+            integerTarget = actualTarget;
+            percentError = Math.abs((integerTarget - result) / integerTarget);
+            if (percentError < ERROR_BUFFER){
+
+                numCorrect++;
+                System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                
+            }
+            else{
+                System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+               
+            }
+        }
+        //test(inputs, outputs, paths, ALPHA);
+        return paths;
 }
 
 
@@ -233,6 +320,8 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
     NUM_INPUT_NODES = inputs.size();
     NUM_OUTPUT_NODES = outputs.size();
 
+    //System.out.println("Number of output nodes: " + NUM_OUTPUT_NODES);
+
     //update start and end nodes for each path
     for (int i = 0; i < NUM_INPUT_NODES; i++){
         for (int j = 0; j < NUM_OUTPUT_NODES; j++){
@@ -243,7 +332,7 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
             paths[i][j].setStart(inputs.get(i));
             paths[i][j].setEnd(outputs.get(j));
 
-            System.out.println("Path " + paths[i][j].getIdentifier() + " updated.");
+            //System.out.println("Path " + paths[i][j].getIdentifier() + " updated.");
         }
     }
 
@@ -256,7 +345,7 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
         for (int j = 0; j < NUM_OUTPUT_NODES; j++){
  
             inputSums[j] += paths[i][j].getValue();
-            System.out.println("Input for output node " + outputs.get(j).getIdentifier() + ": " + inputSums[j]);
+            //System.out.println("Input for output node " + outputs.get(j).getIdentifier() + ": " + inputSums[j]);
  
         }
     }
@@ -266,7 +355,7 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
  
         outputs.get(i).calculateValue(inputSums[i]);
 
-        System.out.println("Output node " + outputs.get(i).getIdentifier() + " value : " + outputs.get(i).getValue());
+        //System.out.println("Output node " + outputs.get(i).getIdentifier() + " value : " + outputs.get(i).getValue());
 
         if (i == NUM_OUTPUT_NODES - 1){
             System.out.println();
@@ -320,6 +409,8 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
     //output is represented in bit string
     else{
 
+        //System.out.println("Number output nodes: " + NUM_OUTPUT_NODES);
+
         //loop through outputs. The node with the highest value is the network's output
         int bestNode = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
@@ -328,14 +419,14 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
 
             if (outputs.get(i).getValue() > bestValue){
 
-                bestNode = i + 1;
+                bestNode = i;
                 bestValue = outputs.get(i).getValue();
             }
 
             //find which node is the actual target value
             if (outputs.get(i).getTarget() == 1){
 
-                actualTarget = i + 1;
+                actualTarget = i;
             }
         }
 
@@ -450,27 +541,43 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
         
     }
 
-    // //function creates paths between every inputNode and every outputNode. Called in Neural class after files have been read in.
-    // //Takes vectors of inputNodes and outputNodes as parameters, returns void
-    // public static void generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
+        /****************************************
+         *                                      *
+         *        generatePaths function        *
+         *         Andrew Miller-Smith          *
+         *                                      *
+         ****************************************/
 
-    //         int numInputs = inputNodes.size();
-    //         int numOutputs = outputNodes.size();
-    //         //initialize paths array
-    //         paths = new Path[numInputs][numOutputs];
+    //function creates paths between every inputNode and every outputNode. Called in Neural class after files have been read in.
+    //Takes vectors of inputNodes and outputNodes as parameters, returns void
+    public static Path[][] generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
 
-    //         int uniqueIdentifer = 0;
-    //         //create paths
-    //         for (int i = 0; i < numInputs; i++){
-    //             for (int j = 0; j < numOutputs; j++){
+            int numInputs = inputNodes.size();
+            int numOutputs = outputNodes.size();
+            //initialize paths array
+            Path[][] newPaths = new Path[numInputs][numOutputs];
 
-    //                 Path newPath = new Path(inputNodes.get(i), outputNodes.get(j), uniqueIdentifer);
-    //                 paths[i][j] = newPath;
-    //                 uniqueIdentifer++;
-    //             }
+            int uniqueIdentifer = 0;
+            //create paths
+            for (int i = 0; i < numInputs; i++){
+                for (int j = 0; j < numOutputs; j++){
 
-    //         }
-    // }
+                    Path newPath = new Path(inputNodes.get(i), outputNodes.get(j), uniqueIdentifer);
+                    newPaths[i][j] = newPath;
+                    uniqueIdentifer++;
+                }
+
+            }
+
+      //       for (int i = 0; i < numInputs; i++){
+      //        for (int j = 0; j < numOutputs; j++){
+
+      //            System.out.println("Path " + paths[i][j].getIdentifier() + " start: " + paths[i][j].getStart().getIdentifier() + " End: " + paths[i][j].getEnd().getIdentifier() + " Weight: " + paths[i][j].getValue());
+      //        }
+            // }
+    
+        return newPaths;
+    }
 
 
 
