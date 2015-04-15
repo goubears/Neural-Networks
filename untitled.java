@@ -25,6 +25,10 @@ public class untitled{
 	private static File fileTesting;
 	private static String fileNameTraining;
 	private static String fileNameTesting;
+	private static final int NUM_EPOCHS = 50;
+
+	//int for tracking number of correct training answers
+	public static int numberCorrect = 0;
 
 	//(training) vectors of input and output nodes, 2D paths array
 	private static Vector<Vector<inputNode>> trainingInputVector = new Vector<Vector<inputNode>>();
@@ -65,14 +69,31 @@ public class untitled{
 		paths = network.generatePaths(trainingInputVector.get(0), trainingOutputVector.get(0));
 
 		Path[][] tempPaths;
-		//System.out.println("Training input vector size: " + trainingInputVector.get(0).getSize();
-		for (int i = 0; i < trainingInputVector.size() - 1; i++){
 
-			// System.out.println(trainingOutputVector.get(i).get(0).getTarget());
-			// System.out.println("Finished problem.");
-			tempPaths = network.train(trainingInputVector.get(i), trainingOutputVector.get(i), paths, learningRate);
-			paths = tempPaths;
+		int epochs = 0;
+		int numTrainingSessions = 0;
+		double percentCorrect;
+		while (epochs < NUM_EPOCHS){
 
+
+			//System.out.println("Training input vector size: " + trainingInputVector.get(0).getSize();
+			for (int i = 0; i < trainingInputVector.size() - 1; i++){
+
+				// System.out.println(trainingOutputVector.get(i).get(0).getTarget());
+				// System.out.println("Finished problem.");
+				tempPaths = network.train(trainingInputVector.get(i), trainingOutputVector.get(i), paths, learningRate);
+				paths = tempPaths;
+				numTrainingSessions++;
+
+			}
+
+			epochs++;
+			percentCorrect = (double)numberCorrect / (double) numTrainingSessions;
+			//System.out.println("Number correct:" + numberCorrect);
+			//System.out.println("Number of training sessions: " + numTrainingSessions);
+			System.out.println("Percent correct after " + epochs + " training epochs: " + percentCorrect*100);
+
+			
 		}
 
 		//test on test
@@ -394,7 +415,14 @@ if(fileSize == 8)
 		}
 	}
 
+public static void incrementNumberCorrect(int i){
+
+	i++;
+}	
+
 }
+
+
 
 /* Adela:
 Storage of print statements

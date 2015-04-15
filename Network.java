@@ -20,6 +20,9 @@ import java.util.Random;
 
 public class Network {
  
+//instance of neural class
+private static untitled neural = new untitled();
+
 //buffer for determining if an output value is correct
 private static final double ERROR_BUFFER = 0.1;
 private static final double OUTPUT_MULTIPLIER = 10;
@@ -140,9 +143,9 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
     // }
 
 
-    int numIterations = 0;
+    //int numIterations = 0;
     //train nodes on practice problems
-    while (numIterations < NUM_EPOCHS){
+    //while (numIterations < NUM_EPOCHS){
        
         //array for storing input sums for each node
         double inputSums[] = new double[NUM_OUTPUT_NODES];
@@ -198,11 +201,11 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
             }
         }
 
-        numIterations++;
+        //numIterations++;
 
 
 
-    }
+    //}
 
      //calculate values of output nodes based on weighted inputs
         for (int i = 0; i < NUM_OUTPUT_NODES; i++){
@@ -225,7 +228,7 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
         //case with only one output node
         if (outputs.size() == 1){
         	
-        	System.out.println("TEST RESULT");
+        	//System.out.println("TEST RESULT");
      
             result = (int)(outputs.get(0).getValue() * OUTPUT_MULTIPLIER + 0.5);
             //Because I could not stop for Death,
@@ -248,12 +251,12 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
             percentError = Math.abs((integerTarget - result) / integerTarget);
             if (percentError < ERROR_BUFFER){
 
-                numCorrect++;
-                System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                neural.numberCorrect++;
+                //System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
                 
             }
             else{
-                System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                //System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
                 
             }
      
@@ -262,7 +265,7 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
         //output is represented in bit string
         else{
 
-        	System.out.println("TEST RESULT");
+        	//System.out.println("TEST RESULT");
             //System.out.println("Number output nodes: " + NUM_OUTPUT_NODES);
 
             //loop through outputs. The node with the highest value is the network's output
@@ -290,12 +293,12 @@ public static Path[][] train(Vector<inputNode> trainingInput, Vector<outputNode>
             percentError = Math.abs((integerTarget - result) / integerTarget);
             if (percentError < ERROR_BUFFER){
 
-                numCorrect++;
-                System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                neural.numberCorrect++;
+                //System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
                 
             }
             else{
-                System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
+                //System.out.println("Solution incorrect. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
                
             }
         }
@@ -393,7 +396,15 @@ public static boolean test(Vector<inputNode> testInput, Vector<outputNode> testO
 
         //check if output is within percent error bounds (i.e. if it is considered correct)
         percentError = Math.abs((integerTarget - result) / integerTarget);
-        if (percentError < ERROR_BUFFER){
+        if (result == integerTarget){
+
+            numCorrect++;
+            System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + 0.0);
+            return true;
+
+        }
+
+        else if (percentError < ERROR_BUFFER){
 
             numCorrect++;
             System.out.println("Solution correct. Target: " + integerTarget + " Network solution: " + result + " Percent error: " + percentError);
