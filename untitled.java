@@ -15,11 +15,10 @@
 import java.io.*;
 import java.util.*;
 
-public class Neural{
+public class untitled{
 
 	//file Variables
 	private static BufferedReader reader = null;
-
 	private static File fileTraining;
 	private static File fileTesting;
 	private static String fileNameTraining;
@@ -29,12 +28,6 @@ public class Neural{
 	private static Vector<Vector<inputNode>> trainingInputVector = new Vector<Vector<inputNode>>();
 	private static Vector<Vector<outputNode>> trainingOutputVector = new Vector<Vector<outputNode>>();
 
-	private static File file;
-	private static String fileName;
-	private static Network network = new Network();
-
-	private static Path[][] paths;
-
 	//(testing) vectors of input and output nodes 
 	private static Vector<Vector<inputNode>> testingInputVector = new Vector<Vector<inputNode>>();
 	private static Vector<Vector<outputNode>> testingOutputVector = new Vector<Vector<outputNode>>();
@@ -42,6 +35,7 @@ public class Neural{
 	//command line arguments
 	private static int fileSize; // 8 or 32
 	private static String method; // s: single or t: ten
+	private static double learningRate;
 
 
 	//it reads in from the command line in this order:
@@ -59,8 +53,23 @@ public class Neural{
 
 		fileSize = Integer.parseInt(args[2]);
 		method = args[3];
+		learningRate = Double.parseDouble(args[4]);
+
 		readFileTraining(fileTraining);
 		readFileTesting(fileTesting);
+
+	System.out.printf("%d ", testingInputVector.get(0).size());
+
+	for(int i=0; i<testingInputVector.get(0).size(); i++){
+	 	System.out.printf("%d ", testingInputVector.get(0).get(i).getValue());
+	}
+	System.out.println();
+		
+	for(int i=0; i<testingOutputVector.get(0).size(); i++){
+		System.out.printf("%f ", testingOutputVector.get(3).get(i).getTarget());
+	}
+	System.out.println();
+		
 
 	}
 
@@ -125,6 +134,7 @@ public class Neural{
 				}
 				//System.out.printf("%d", a);
 			}
+
 
 
 			else if (fileSize == 32)
@@ -207,35 +217,6 @@ public class Neural{
 			System.err.format("Exception occurred trying to read '%s'.", f);
 			e.printStackTrace();	
 		}
-
-		// fileSize = Integer.parseInt(args[1]);
-		// method = args[2];
-		// readFile(file);
-		// generatePaths(inputVector.get(0), outputVector.get(0));
-
-		// System.out.printf("%d ", inputVector.get(0).size());
-
-		// for(int i=0; i<inputVector.get(0).size(); i++){
-		//  	System.out.printf("%d ", inputVector.get(0).get(i).getValue());
-		// }
-		// System.out.println();
-		
-		// for(int i=0; i<outputVector.get(0).size(); i++){
-		// 	System.out.printf("%f ", outputVector.get(1).get(i).getTarget());
-		// }
-		// System.out.println();
-
-		// Path[][] tempPaths;
-		// for (int i = 0; i < inputVector.size() - 1; i++){
-
-		// 	System.out.println(outputVector.get(i).get(0).getTarget());
-		// 	tempPaths = network.train(inputVector.get(i), outputVector.get(i), paths, 0.1);
-		// 	paths = tempPaths;
-
-		// }
-		// //paths = network.train(inputVector.get(0), outputVector.get(0), paths, 0.1);
-		// System.out.println("Trained on first example.");
-
 	}
 
 
@@ -256,8 +237,7 @@ public class Neural{
 		{
 			reader = new BufferedReader(new FileReader(f));
 			String line;
-
-			if(fileSize == 8)
+if(fileSize == 8)
 			{
 				while ((line = reader.readLine()) != null) 
 				{
@@ -302,6 +282,7 @@ public class Neural{
 				}
 				//System.out.printf("%d", a);
 			}
+
 
 
 			else if (fileSize == 32)
@@ -385,45 +366,8 @@ public class Neural{
 			e.printStackTrace();	
 		}
 	}
+
 }
-
-		/****************************************
-         *                                      *
-         *        generatePaths function        *
-         *         Andrew Miller-Smith          *
-         *                                      *
-         ****************************************/
-
-	//function creates paths between every inputNode and every outputNode. Called in Neural class after files have been read in.
-    // //Takes vectors of inputNodes and outputNodes as parameters, returns void
-    // public static void generatePaths(Vector<inputNode> inputNodes, Vector<outputNode> outputNodes){
-
-    //         int numInputs = inputNodes.size();
-    //         int numOutputs = outputNodes.size();
-    //         //initialize paths array
-    //         paths = new Path[numInputs][numOutputs];
-
-    //         int uniqueIdentifer = 0;
-    //         //create paths
-    //         for (int i = 0; i < numInputs; i++){
-    //             for (int j = 0; j < numOutputs; j++){
-
-    //                 Path newPath = new Path(inputNodes.get(i), outputNodes.get(j), uniqueIdentifer);
-    //                 paths[i][j] = newPath;
-    //                 uniqueIdentifer++;
-    //             }
-
-    //         }
-
-    //   //       for (int i = 0; i < numInputs; i++){
-    //   //   		for (int j = 0; j < numOutputs; j++){
-
-    //   //       		System.out.println("Path " + paths[i][j].getIdentifier() + " start: " + paths[i][j].getStart().getIdentifier() + " End: " + paths[i][j].getEnd().getIdentifier() + " Weight: " + paths[i][j].getValue());
-    //   //   		}
-    // 		// }
-    // }
-
-
 
 /* Adela:
 Storage of print statements

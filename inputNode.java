@@ -8,7 +8,8 @@
 
 	/*
 
-	Description: THE CAKE IS A LIE.
+	Description: The inputNode class represents a neuron that sends information to other neurons (in this case the outputNodes). Each neuron contains a binary value and unique identifier.
+    The value is used in sending signals to the outputNodes. Class includes basic getter and setter functions.
 
 	*/
 
