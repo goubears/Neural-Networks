@@ -43,7 +43,7 @@ public class Path{
 	    	potentialWeight = weightGenerator.nextDouble();
 	    }
 
-	    weight = INITIAL_WEIGHT_LIMIT*2 - potentialWeight;
+	    weight = INITIAL_WEIGHT_LIMIT - potentialWeight;
 	    //System.out.println("Weight: " + weight);
 	}
 
