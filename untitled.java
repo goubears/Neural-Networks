@@ -84,6 +84,8 @@ public class untitled{
 				numTrainingSessions++;
 			}
 
+			System.out.println("Number correct: " + numberCorrect + " Training sessions: " + numTrainingSessions);
+
 			epochs++;
 			percentCorrect = (double)numberCorrect / (double)numTrainingSessions;
 			System.out.println("Percent correct after " + epochs + " training epochs: " + percentCorrect*100);
