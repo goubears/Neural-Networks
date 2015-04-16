@@ -42,11 +42,11 @@ public class Path{
 	    double potentialWeight = weightGenerator.nextDouble();
 
 	    while (potentialWeight > INITIAL_WEIGHT_LIMIT*2){
+	    	
 	    	potentialWeight = weightGenerator.nextDouble();
 	    }
 
 	    weight = INITIAL_WEIGHT_LIMIT - potentialWeight;
-	    //System.out.println("Weight: " + weight);
 	}
 
 	public void setStart(inputNode newStart){
@@ -66,7 +66,6 @@ public class Path{
 	 
 	public double getDerivative(double x){
 	   
-	    //System.out.println("Derivative: " + Math.pow(e, x) / Math.pow((1 + Math.pow(e, x)), 2));
 	    return Math.pow(e, x) / Math.pow(1 + Math.pow(e, x), 2);
 	}
 	 

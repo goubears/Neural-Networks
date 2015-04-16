@@ -38,7 +38,6 @@ public class outputNode {
     public void calculateValue(double input){
  
         value = 1 / (1 + Math.pow(e, -input + SHIFT));
- 
    }
  
     public double getValue(){
@@ -56,7 +55,6 @@ public class outputNode {
         return identifier;
     }
 
-    //THE CAKE IS A LIE.
     public boolean equals(outputNode x){
 
         if (x.getIdentifier() == identifier){

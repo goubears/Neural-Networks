@@ -36,7 +36,6 @@ public class inputNode{
     public void setValue(int newValue){
 
     	value = newValue;
-
     }
 
     public int getIdentifier(){
