@@ -70,6 +70,8 @@ public class untitled{
 		paths = network.generatePaths(trainingInputVector.get(0), trainingOutputVector.get(0));
 
 		Path[][] tempPaths;
+		
+		System.out.println();
 
 		//training
 		int epochs = 0;
@@ -84,11 +86,11 @@ public class untitled{
 				numTrainingSessions++;
 			}
 
-			System.out.println("Number correct: " + numberCorrect + " Training sessions: " + numTrainingSessions);
+			//System.out.println("Number correct: " + numberCorrect + " Training sessions: " + numTrainingSessions);
 
 			epochs++;
 			percentCorrect = (double)numberCorrect / (double)numTrainingSessions;
-			System.out.println("Percent correct after " + epochs + " training epochs: " + percentCorrect*100);
+			System.out.println(percentCorrect*100);
 			numberCorrect = 0;
 			numTrainingSessions = 0;
 		}
@@ -102,7 +104,9 @@ public class untitled{
 		}
 		
 		percentCorrect = (double)numberCorrect / (double)numTestingSessions;
-		System.out.println("Percent correct after testing: " + percentCorrect*100);
+		System.out.println();
+		System.out.println(percentCorrect*100);
+		System.out.println();
 	}
 
 	public static void readFileTraining(File f) 
